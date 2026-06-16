@@ -1,0 +1,19 @@
+# Root dependencies
+node_modules/
+
+# Backend dependencies & secrets
+backend/node_modules/
+backend/.env
+
+# Frontend dependencies & build artifacts
+frontend/node_modules/
+frontend/dist/
+frontend/build/
+frontend/.sandbox/
+
+# Development / IDE local settings
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.log

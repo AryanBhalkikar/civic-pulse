@@ -7,6 +7,7 @@ import dotenv from "dotenv";
 
 import routeHandler from './routes/routeHandler.js';
 import initializePassport from "./config/passport.js";
+import "./controllers/wardEscalationWorker.js";
 
 const app = express();
 const port = 5001;

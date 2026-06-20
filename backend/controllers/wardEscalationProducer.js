@@ -3,7 +3,7 @@ import redisConnection from "../config/redis.js";
 
 const escalationQueue = new Queue('escalation-queue', { connection: redisConnection });
 
-async function wardEscalationController(issueId, lng, lat){
+async function wardEscalationProducer(issueId, lng, lat){
     try{
         const response = await escalationQueue.add('issue-escalation', {
             issueId: issueId,
@@ -16,4 +16,4 @@ async function wardEscalationController(issueId, lng, lat){
     }
 }
 
-export default wardEscalationController;
+export default wardEscalationProducer;

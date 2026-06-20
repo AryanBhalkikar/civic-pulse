@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import { Worker } from "bullmq";
 import redisConnection from "../config/redis.js";
 import Groq from 'groq-sdk';
+import emailDeliveryQueue from "./emailDeliveryQueue.js";
 
 const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 
@@ -39,8 +40,6 @@ const escalationWorker = new Worker('escalation-queue', async(job) => {
         Your job is to generate a highly professional, polite, and actionable escalation email to a BBMP Municipal Chief Engineer. 
         Do not include any pleasantries or conversational filler outside the email structure. Return ONLY the body text of the email.`;
 
-        console.log(userPrompt);
-
         const aiResponse = await groq.chat.completions.create({
             model: "llama-3.3-70b-versatile",
             messages: [
@@ -49,9 +48,35 @@ const escalationWorker = new Worker('escalation-queue', async(job) => {
             ],
             temperature: 0.3
         });
-        console.log(aiResponse.choices[0]?.message?.content);
+
+        const emailBody = aiResponse.choices[0]?.message?.content;
+        const emailSubject = `Reporting Urgent Civic Infrastructure Issue in ${contactDetails.ward_name}`;
+
+        if (!emailBody) throw new Error("Groq failed to generate email text.");
+
+        const outboundEmailDbText = "INSERT INTO outbound_email_drafts " + 
+        "(issue_id, email_address, email_subject, email_body) VALUES ($1, $2, $3, $4)";
+
+        await pool.query(outboundEmailDbText, [
+            job.data.issueId,
+            contactDetails.office_email,
+            emailSubject,
+            emailBody
+        ]);
+
+        await emailDeliveryQueue.add('outbound-email', {
+            emailAddress: contactDetails.office_email,
+            emailSubject: emailSubject,
+            emailBody: emailBody
+        }, {
+            attempts: 5,
+            backoff: { type: 'exponential', delay: 5000 }
+        });
+
+        console.log(`Email draft successfully logged for ${contactDetails.ward_name}`);
     }
     catch(err){
+        console.log("wardEscalationWorker throws err:");
         console.error(err.message);
     }
 }, { 

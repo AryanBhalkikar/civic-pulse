@@ -1,5 +1,5 @@
 import pool from "../config/db.js";
-import wardEscalationController from "./wardEscalationController.js";
+import wardEscalationProducer from "./wardEscalationProducer.js";
 
 function generatedUnclubbedIssueId(lat, lng){
 
@@ -84,7 +84,7 @@ async function issueController(req, res, next){
             issuesAllData[1] = existingIssue.issue_id; //issuesAllData[1] is issueIdClubbed
 
             //if (existingIssue.report_count + 1 === 5){
-                wardEscalationController(existingIssue.issue_id, req.body.lng, req.body.lat);
+                wardEscalationProducer(existingIssue.issue_id, req.body.lng, req.body.lat);
             //}
         }
 
@@ -93,6 +93,7 @@ async function issueController(req, res, next){
         res.status(200).json( {message: "Submission successful."} );
     }
     catch (err){
+        console.log("issueController throws err:");
         console.log(err.message);
         res.status(500).json({ message: "Server error occurred." });
     }

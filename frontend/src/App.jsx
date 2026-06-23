@@ -4,6 +4,7 @@ import Landing from "./pages/landing/Landing.jsx";
 import Login from "./pages/auth/Login.jsx";
 import Signup from "./pages/auth/Signup.jsx";
 import MapPage from "./pages/map/MapPage.jsx";
+import AdminDashboard from "./pages/admin/AdminDashboard.jsx";
 
 function App() {
   return(
@@ -13,6 +14,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />}/>
         <Route path="/mapPage" element={<MapPage />}/>
+        <Route path="/admin/dashboard" element={<AdminDashboard />}/>
       </Routes>
     </BrowserRouter>
   )

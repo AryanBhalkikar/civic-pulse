@@ -26,8 +26,8 @@ async function signup(req, res, next){
         const hashedPassword = await bcrypt.hash(password, saltRounds);
 
         await pool.query(
-            'INSERT INTO users (firstname, lastname, email, password) VALUES ($1, $2, $3, $4)',
-            [firstName, lastName, email, hashedPassword]
+            'INSERT INTO users (firstname, lastname, email, password, is_admin) VALUES ($1, $2, $3, $4, $5)',
+            [firstName, lastName, email, hashedPassword, false]
         );
 
         res.status(200).json({ message: 'User registered successfully!' });

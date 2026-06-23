@@ -17,11 +17,14 @@ async function initializePassport(passport){
 
             bcrypt.compare(password, user.password, (err, result) => {
                 if (err){
+                    return cb(err);
+                }
+
+                if (!result) {
                     return cb(null, false);
                 }
-                else{
-                    return cb(null, user);
-                }
+
+                return cb(null, user);
             });
         }
         catch(err){

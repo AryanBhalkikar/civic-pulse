@@ -3,7 +3,6 @@ import dotenv from "dotenv";
 import { Worker } from "bullmq";
 import redisConnection from "../config/redis.js";
 import Groq from 'groq-sdk';
-import emailDeliveryQueue from "./emailDeliveryQueue.js";
 
 const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 
@@ -55,23 +54,15 @@ const escalationWorker = new Worker('escalation-queue', async(job) => {
         if (!emailBody) throw new Error("Groq failed to generate email text.");
 
         const outboundEmailDbText = "INSERT INTO outbound_email_drafts " + 
-        "(issue_id, email_address, email_subject, email_body) VALUES ($1, $2, $3, $4)";
+        "(issue_id, email_address, email_subject, email_body, status) VALUES ($1, $2, $3, $4, $5)";
 
         await pool.query(outboundEmailDbText, [
             job.data.issueId,
             contactDetails.office_email,
             emailSubject,
-            emailBody
+            emailBody,
+            "PENDING"
         ]);
-
-        await emailDeliveryQueue.add('outbound-email', {
-            emailAddress: contactDetails.office_email,
-            emailSubject: emailSubject,
-            emailBody: emailBody
-        }, {
-            attempts: 5,
-            backoff: { type: 'exponential', delay: 5000 }
-        });
 
         console.log(`Email draft successfully logged for ${contactDetails.ward_name}`);
     }

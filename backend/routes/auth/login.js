@@ -23,7 +23,7 @@ async function login(req, res, next){
             }
 
             if (!user) {
-                return res.status(401).json({ message: info.message || "Login failed" });
+                return res.status(401).json({ message: info?.message || "Login failed" });
             }
 
             req.logIn(user, (err) => {

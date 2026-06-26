@@ -1,57 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import './IssueData.css';
-
-const STATUS_LABELS = {
-  crisis:    'Crisis',
-  open:      'Open',
-  verifying: 'Verifying',
-  resolved:  'Resolved',
-};
-
-function formatDate(dateStr) {
-  if (!dateStr) return 'Unknown date';
-  return new Date(dateStr).toLocaleDateString('en-IN', {
-    day: 'numeric', month: 'long', year: 'numeric',
-  });
-}
-
-function IssueItem({ item }) {
-  return (
-    <div className="idata-item">
-      <div className="idata-item-header">
-        <span className="idata-item-title">{item.title}</span>
-        <span className={`idata-badge status-${item.status}`}>
-          {STATUS_LABELS[item.status] || item.status}
-        </span>
-      </div>
-
-      <div className="idata-fields">
-        <div className="idata-field">
-          <span className="idata-field-label">Address</span>
-          <span className="idata-field-value">{item.address}</span>
-        </div>
-        <div className="idata-field">
-          <span className="idata-field-label">Reported</span>
-          <span className="idata-field-value">{formatDate(item.reported_date)}</span>
-        </div>
-        <div className="idata-field">
-          <span className="idata-field-label">Coordinates</span>
-          <span className="idata-field-value">
-            {item.lat?.toFixed(5)}, {item.lng?.toFixed(5)}
-          </span>
-        </div>
-      </div>
-
-      {item.description && (
-        <div className="idata-desc-block">
-          <span className="idata-field-label">Description</span>
-          <p className="idata-item-desc">{item.description}</p>
-        </div>
-      )}
-    </div>
-  );
-}
+import IssueItem from './IssueItem.jsx';
 
 function IssueData({ issue, onClose }) {
   const [clubbedIssuesList, setClubbedIssuesList] = useState([]);
@@ -79,6 +29,23 @@ function IssueData({ issue, onClose }) {
 
   function handleOverlayClick(e) {
     if (e.target === e.currentTarget) onClose();
+  }
+
+  async function handleResolve(issue_id) {
+    try{
+      const response = await axios.post(
+        `http://localhost:5001/api/resolveIssue/${issue_id}`,
+        {},
+        { withCredentials: true }
+      );
+      
+      if (response.status === 200){
+        alert('Vote successful!');
+      }
+    }
+    catch(err){
+      alert(err.response?.data?.message || "Vote failed");
+    }
   }
 
   return (
@@ -112,6 +79,21 @@ function IssueData({ issue, onClose }) {
             <IssueItem key={item.issue_id_unclubbed || index} item={item} />
           ))}
         </div>
+
+          {/* ── Footer ── */}
+          {!loading && clubbedIssuesList.length > 0 && (
+              <div className="idata-footer">
+                  <span className="idata-footer-hint">
+                      Mark this if the issue has been resolved by authorities.
+                  </span>
+                  <button
+                      className="btn-resolved"
+                      onClick={() => handleResolve(issue.issue_id)}
+                  >
+                      Mark as resolved
+                  </button>
+              </div>
+          )}
 
       </div>
     </div>

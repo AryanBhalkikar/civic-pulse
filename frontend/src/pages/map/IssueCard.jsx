@@ -1,7 +1,5 @@
 const STATUS_LABELS = {
-  crisis:    'Crisis',
   open:      'Open',
-  verifying: 'Verifying',
   resolved:  'Resolved',
 }
 

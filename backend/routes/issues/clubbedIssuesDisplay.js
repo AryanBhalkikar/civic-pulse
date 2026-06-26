@@ -11,7 +11,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 async function clubbedIssuesDisplay(req, res, next){
     try{
         const issueId = req.query.issue_id;
-        const text = "SELECT *, ST_X(geom) AS lng, ST_Y(geom) AS lat FROM issues_all WHERE issue_id = $1";
+        const text = "SELECT *, ST_X(geom) AS lng, ST_Y(geom) AS lat FROM issues_all WHERE issue_id = $1 "
+        "AND status = 'open'";
 
         const response = await pool.query(text, [issueId]);
         res.status(200).json(response.rows);

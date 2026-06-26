@@ -22,6 +22,17 @@ function generateClubbedIssueId(lat, lng, issueTitle){
 
 async function issueController(req, res, next){
     try{
+        const rateLimitText = "SELECT COUNT(*) FROM issues_all WHERE user_email = $1 AND "+
+        "reported_date >= NOW() - INTERVAL '24 hours';";
+
+        const rateLimitResponse = await pool.query(rateLimitText, [req.user.email]);
+        const userRequestCount = parseInt(rateLimitResponse.rows[0].count);
+
+        if (userRequestCount >= 3){
+            return res.status(400).json({ message: "Daily submission limit reached. " + 
+                "You can only report up to 3 issues every 24 hours." });
+        }
+
         const checkExistanceText = "SELECT issue_id, report_count FROM issues_display " + 
         "WHERE title = $1 AND status = 'open' AND " + 
         "ST_DWithin(geom::geography, ST_SetSRID(ST_MakePoint($2, $3), 4326)::geography, 40) " + 
@@ -33,8 +44,8 @@ async function issueController(req, res, next){
             req.body.lat,
         ];
 
-        const response = await pool.query(checkExistanceText, checkExistanceData);
-        const existingIssue = response.rows[0];
+        const checkExistanceResponse = await pool.query(checkExistanceText, checkExistanceData);
+        const existingIssue = checkExistanceResponse.rows[0];
 
         const issueIdUnclubbed = generatedUnclubbedIssueId(req.body.lat, req.body.lng);
         const issueIdClubbed = generateClubbedIssueId(req.body.lat, req.body.lng, req.body.title);
@@ -53,7 +64,7 @@ async function issueController(req, res, next){
         const issuesAllText = "INSERT INTO issues_all VALUES " + 
         "($1, $2, $3, $4, $5, $6, ST_SetSRID(ST_MakePoint($7, $8), 4326), $9, $10)";
 
-        if (response.rows.length === 0){
+        if (checkExistanceResponse.rows.length === 0){
             const issuesDisplayData = [
                 issueIdClubbed,
                 req.body.title,
@@ -71,6 +82,18 @@ async function issueController(req, res, next){
             await pool.query(issuesDisplayText, issuesDisplayData);
         }
         else{
+            const checkDuplicateQueryText = "SELECT 1 FROM issues_all WHERE issue_id = $1 AND " + 
+            "user_email = $2 LIMIT 1";
+
+            const checkDuplicateResponse = await pool.query(checkDuplicateQueryText, [
+                existingIssue.issue_id,
+                req.user.email
+            ]);
+            
+            if (checkDuplicateResponse.rows.length > 0){
+                return res.status(400).json({ message: "You have already reported this issue." });
+            }
+
             const updateIssuesDisplayText = "UPDATE issues_display " + 
             "SET report_count = $1 WHERE issue_id = $2";
 

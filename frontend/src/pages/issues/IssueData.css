@@ -162,3 +162,34 @@
 .status-open      { background: #FAEEDA; color: #633806; }
 .status-verifying { background: #E6F1FB; color: #0C447C; }
 .status-resolved  { background: #EAF3DE; color: #27500A; }
+
+/* ── Footer ───────────────────────────────────── */
+.idata-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 14px;
+  padding: 14px 24px;
+  border-top: 1px solid #eee;
+  flex-shrink: 0;
+}
+.idata-footer-hint {
+  font-size: 11px;
+  color: #bbb;
+}
+.btn-resolved {
+  padding: 8px 18px;
+  border: none;
+  border-radius: 8px;
+  background: #1D9E75;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: inherit;
+  white-space: nowrap;
+  transition: background 0.15s;
+}
+.btn-resolved:hover {
+  background: #178a65;
+}

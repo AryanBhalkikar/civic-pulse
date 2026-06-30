@@ -1,9 +1,10 @@
 import axios from "axios";
+import { getApiUrl } from '../../config/api';
 
 async function fetchData(setIssuesList, setLoading){
     try{
         const response = await axios.get(
-            "http://localhost:5001/api/issuesDisplay",
+            getApiUrl('/api/issuesDisplay'),
             { withCredentials: true }
         );
         setIssuesList(response.data);

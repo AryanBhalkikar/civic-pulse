@@ -106,9 +106,9 @@ async function issueController(req, res, next){
 
             issuesAllData[1] = existingIssue.issue_id; //issuesAllData[1] is issueIdClubbed
 
-            //if (existingIssue.report_count + 1 === 5){
+            if (existingIssue.report_count + 1 === 5){
                 wardEscalationProducer(existingIssue.issue_id, req.body.lng, req.body.lat);
-            //}
+            }
         }
 
         await pool.query(issuesAllText, issuesAllData);

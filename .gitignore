@@ -5,11 +5,12 @@ node_modules/
 backend/node_modules/
 backend/.env
 
-# Frontend dependencies & build artifacts
+# Frontend dependencies & build artifacts & secrets
 frontend/node_modules/
 frontend/dist/
 frontend/build/
 frontend/.sandbox/
+frontend/.env
 
 # Development / IDE local settings
 .DS_Store

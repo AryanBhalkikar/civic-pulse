@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import AuthLayout from './AuthLayout';
 import axios from 'axios';
+import { getApiUrl } from '../../config/api';
 import './Auth.css';
 
 function GoogleIcon() {
@@ -32,7 +33,7 @@ function Login() {
     e.preventDefault()
     try{
       const response = await axios.post(
-        'http://localhost:5001/api/login', 
+        getApiUrl('/api/login'), 
         formData,
         { withCredentials: true }
       );
@@ -59,14 +60,14 @@ function Login() {
         </div>
 
         {/* Google button */}
-        <button className="btn-google">
+        {/* <button className="btn-google">
           <GoogleIcon />
           Continue with Google
-        </button>
+        </button> */}
 
         <div className="auth-divider">
           <div className="divider-line"></div>
-          <span className="divider-text">or with email</span>
+          {/* <span className="divider-text">or with email</span> */}
           <div className="divider-line"></div>
         </div>
 

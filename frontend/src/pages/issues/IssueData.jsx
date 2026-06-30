@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import './IssueData.css';
 import IssueItem from './IssueItem.jsx';
+import { getApiUrl } from '../../config/api';
 
 function IssueData({ issue, onClose }) {
   const [clubbedIssuesList, setClubbedIssuesList] = useState([]);
@@ -11,7 +12,7 @@ function IssueData({ issue, onClose }) {
     async function fetchData() {
       try {
         const response = await axios.get(
-          'http://localhost:5001/api/clubbedIssuesDisplay',
+          getApiUrl('/api/clubbedIssuesDisplay'),
           { 
             params: { issue_id: issue.issue_id },
             withCredentials: true 
@@ -34,7 +35,7 @@ function IssueData({ issue, onClose }) {
   async function handleResolve(issue_id) {
     try{
       const response = await axios.post(
-        `http://localhost:5001/api/resolveIssue/${issue_id}`,
+        getApiUrl(`/api/resolveIssue/${issue_id}`),
         {},
         { withCredentials: true }
       );

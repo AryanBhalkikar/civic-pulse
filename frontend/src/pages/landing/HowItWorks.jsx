@@ -1,13 +1,13 @@
 const steps = [
   {
     number: '1',
-    title: 'Snap & pin it',
-    desc: 'Take a photo of the hazard and drop a pin on the map. Takes under 30 seconds.',
+    title: 'Pin it & report',
+    desc: 'Drop a pin on the map. Fill out a brief report of the hazard. Takes under 30 seconds.',
   },
   {
     number: '2',
     title: 'Community verifies',
-    desc: 'Others in your area see the issue and can upvote or add photos to confirm it.',
+    desc: 'Others in your area see the issue and confirm it.',
   },
   {
     number: '3',

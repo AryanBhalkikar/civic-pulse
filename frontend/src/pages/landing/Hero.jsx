@@ -11,13 +11,13 @@ function Hero() {
           <br />Let's fix it.
         </h1>
         <p className="hero-sub">
-          Spot a pothole, broken streetlight, or open manhole? Report it in 30 seconds.
+          Spot a pothole, broken streetlight, or open manhole? Drop a pin on the map and report it.
           The issue auto-escalates to a{' '}
           <strong>High-Priority Crisis</strong> and your ward officer gets notified.
         </p>
         <div className="hero-actions">
           <Link to="/signup" className="btn-hero-primary">Report an issue</Link>
-          <Link to="/map"    className="btn-hero-secondary">Browse the map</Link>
+          <Link to="/signup"    className="btn-hero-secondary">Browse the map</Link>
         </div>
       </div>
       <HeatmapPreview />

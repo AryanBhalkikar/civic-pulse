@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import AuthLayout from './AuthLayout';
+import { getApiUrl } from '../../config/api';
 import './Auth.css';
 
 function Signup() {
@@ -24,7 +25,7 @@ function Signup() {
     
     try{
       const response = await axios.post(
-        'http://localhost:5001/api/signup', 
+        getApiUrl('/api/signup'), 
         formData,
         { withCredentials: true }
       );
@@ -117,10 +118,10 @@ function Signup() {
           </button>
         </form>
 
-        <p className="auth-footer-note">
+        {/* <p className="auth-footer-note">
           By signing up you agree to our <a href="#">Terms</a> and{' '}
           <a href="#">Privacy Policy</a>.
-        </p>
+        </p> */}
 
       </div>
     </AuthLayout>

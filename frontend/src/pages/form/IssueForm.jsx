@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import fetchData from '../map/fetchData';
+import { getApiUrl } from '../../config/api';
 import './IssueForm.css';
 
 const ISSUE_TYPES = [
@@ -42,7 +43,7 @@ function IssueForm({ onClose, lat, lng, setIssuesList, setLoading }) {
     
     try{
         const response = await axios.post(
-            "http://localhost:5001/api/reportIssue",
+            getApiUrl('/api/reportIssue'),
             formData,
             { withCredentials: true }
         );

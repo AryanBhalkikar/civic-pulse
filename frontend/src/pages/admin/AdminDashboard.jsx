@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { getApiUrl } from '../../config/api';
 import './AdminDashboard.css';
 
 function AdminDashboard(){
@@ -11,7 +12,7 @@ function AdminDashboard(){
         async function fetchData(){
             try{
                 const response = await axios.get(
-                    "http://localhost:5001/api/admin/emailsDisplay",
+                    getApiUrl('/api/admin/emailsDisplay'),
                     { withCredentials: true }
                 );
                 setEmailsList(response.data);
@@ -26,7 +27,7 @@ function AdminDashboard(){
     async function handleApprove(id) {
         try{
             const response = await axios.post(
-                `http://localhost:5001/api/admin/emailsDisplay/${id}/approve`,
+                getApiUrl(`/api/admin/emailsDisplay/${id}/approve`),
                 {},
                 { withCredentials: true }
             );
@@ -43,7 +44,7 @@ function AdminDashboard(){
     async function handleReject(id) {
         try{
             const response = await axios.post(
-                `http://localhost:5001/api/admin/emailsDisplay/${id}/reject`,
+                getApiUrl(`/api/admin/emailsDisplay/${id}/reject`),
                 {},
                 { withCredentials: true }
             );

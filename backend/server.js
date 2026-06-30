@@ -11,14 +11,22 @@ import "./controllers/wardEscalationWorker.js";
 import "./controllers/emailDeliveryWorker.js";
 
 const app = express();
-const port = 5001;
+const port = process.env.PORT || 5001;
 dotenv.config();
+
+const frontendOrigins = (process.env.FRONTEND_ORIGIN || 'http://localhost:5173')
+    .split(',')
+    .map((origin) => origin.trim())
+    .filter(Boolean);
+const isProduction = process.env.NODE_ENV === 'production';
+
+app.set('trust proxy', 1);
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
 app.use(cors({
-    origin: 'http://localhost:5173',
+    origin: frontendOrigins,
     credentials: true
 }));
 
@@ -27,7 +35,9 @@ app.use(session ({
     resave: false,
     saveUninitialized: true,
     cookie: {
-        maxAge: 24 * 60 * 60 * 1000
+        maxAge: 24 * 60 * 60 * 1000,
+        sameSite: isProduction ? 'none' : 'lax',
+        secure: isProduction
     }
 }));
 

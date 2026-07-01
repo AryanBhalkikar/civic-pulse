@@ -1,4 +1,4 @@
-# CivicPulse
+# ZonePulse (Internal Name: CivicPulse)
 
 CivicPulse is a web application that enables citizens to report public hazards such as potholes, open manholes, blocked roads, and broken streetlights, and automatically routes those reports to the appropriate authority via email.
 

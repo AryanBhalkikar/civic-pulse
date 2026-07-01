@@ -8,7 +8,7 @@ function AuthLayout({ children }) {
       <div className="auth-brand">
         <div className="auth-brand-logo">
           <div className="auth-logo-dot"></div>
-          <span>CivicPulse</span>
+          <span>ZonePulse</span>
         </div>
 
         <div className="auth-brand-mid">

@@ -104,7 +104,7 @@ function Login() {
           </div>
 
           <button type="submit" className="btn-submit">
-            Log in to CivicPulse
+            Log in to ZonePulse
           </button>
         </form>
 

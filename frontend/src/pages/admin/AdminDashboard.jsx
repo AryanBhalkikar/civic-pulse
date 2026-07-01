@@ -64,7 +64,7 @@ function AdminDashboard(){
             <div className="admin-topbar">
                 <div className="admin-logo">
                     <div className="admin-logo-dot"></div>
-                    <span>CivicPulse</span>
+                    <span>ZonePulse</span>
                 </div>
                 <span className="admin-topbar-label">Admin dashboard</span>
             </div>

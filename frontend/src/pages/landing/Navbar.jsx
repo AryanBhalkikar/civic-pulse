@@ -5,7 +5,7 @@ function Navbar() {
     <nav className="navbar">
       <div className="navbar-logo">
         <div className="logo-dot"></div>
-        <span>CivicPulse</span>
+        <span>ZonePulse</span>
       </div>
       <div className="navbar-links">
         <Link to="/login" className="btn-ghost">Log in</Link>

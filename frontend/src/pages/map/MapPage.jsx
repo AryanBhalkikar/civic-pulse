@@ -31,7 +31,7 @@ function MapPage(){
         <div className="map-topbar">
             <div className="map-logo">
                 <div className="map-logo-dot"></div>
-                <span>CivicPulse</span>
+                <span>ZonePulse</span>
             </div>
             <Searchbar
             handleCenterChange={handleCenterChange}

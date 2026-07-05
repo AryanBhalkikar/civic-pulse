@@ -13,6 +13,7 @@ function Signup() {
     email: '',
     password: '',
   })
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
 
@@ -24,6 +25,7 @@ function Signup() {
     e.preventDefault()
     
     try{
+      setLoading(true);
       const response = await axios.post(
         getApiUrl('/api/signup'), 
         formData,
@@ -38,6 +40,9 @@ function Signup() {
     }
     catch (err){
       console.error(err.message);
+    }
+    finally{
+      setLoading(false);
     }
   }
 
@@ -113,8 +118,8 @@ function Signup() {
             />
           </div>
 
-          <button type="submit" className="btn-submit">
-            Create account
+          <button type="submit" className="btn-submit" disabled={loading}>
+            {loading ? <span className="btn-spinner"></span> : 'Create Account'}
           </button>
         </form>
 

@@ -14,10 +14,15 @@ const app = express();
 const port = process.env.PORT || 5001;
 dotenv.config();
 
-const frontendOrigins = (process.env.FRONTEND_ORIGIN || 'http://localhost:5173')
+const configuredOrigins = (process.env.FRONTEND_ORIGIN || 'http://localhost:5173,http://127.0.0.1:5173')
     .split(',')
     .map((origin) => origin.trim())
     .filter(Boolean);
+const frontendOrigins = Array.from(new Set([
+    ...configuredOrigins,
+    'http://localhost:5173',
+    'http://127.0.0.1:5173'
+]));
 const isProduction = process.env.NODE_ENV === 'production';
 
 app.set('trust proxy', 1);

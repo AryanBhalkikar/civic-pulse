@@ -12,7 +12,7 @@ async function initializePassport(passport){
             const user = result.rows[0];
 
             if (!user){
-                return cb(null, false);
+                return cb(null, false, { message: 'Invalid email or password.' });
             }
 
             bcrypt.compare(password, user.password, (err, result) => {
@@ -21,14 +21,14 @@ async function initializePassport(passport){
                 }
 
                 if (!result) {
-                    return cb(null, false);
+                    return cb(null, false, { message: 'Invalid email or password.' });
                 }
 
                 return cb(null, user);
             });
         }
         catch(err){
-            return cb(null, false);
+            return cb(null, false, { message: 'Unable to verify credentials right now.' });
         }
     }));
 

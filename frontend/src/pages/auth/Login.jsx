@@ -22,6 +22,7 @@ function Login() {
     email: '',
     password: '',
   })
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
 
@@ -32,6 +33,7 @@ function Login() {
   async function handleSubmit(e) {
     e.preventDefault()
     try{
+      setLoading(true);
       const response = await axios.post(
         getApiUrl('/api/login'), 
         formData,
@@ -46,6 +48,9 @@ function Login() {
     }
     catch (err){
       alert(err.response?.data?.message || "Login failed");
+    }
+    finally{
+      setLoading(false);
     }
   }
 
@@ -103,8 +108,8 @@ function Login() {
             </div>
           </div>
 
-          <button type="submit" className="btn-submit">
-            Log in to ZonePulse
+          <button type="submit" className="btn-submit" disabled={loading}>
+            {loading ? <span className="btn-spinner"></span> : 'Log in to ZonePulse'}
           </button>
         </form>
 
